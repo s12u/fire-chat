@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/firstRunFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.tistory.mybstory.firechat.ui.main.MainFragment"
+        tools:layout="@layout/fragment_main"></fragment>
+
+    <fragment
+        android:id="@+id/firstRunFragment"
+        android:name="com.tistory.mybstory.firechat.ui.auth.FirstRunFragment"
+        tools:layout="@layout/fragment_first_run">
+
+        <action
+            android:id="@+id/action_firstLogin_to_phoneAuthFragment"
+            app:destination="@id/phoneAuthFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/phoneAuthFragment"
+        android:name="com.tistory.mybstory.firechat.ui.auth.signup.PhoneAuthFragment"
+        tools:layout="@layout/fragment_phone_auth">
+        <action
+            android:id="@+id/action_phoneAuth_to_countrySelectFragment"
+            app:destination="@id/countrySelectFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/countrySelectFragment"
+        android:name="com.tistory.mybstory.firechat.ui.auth.country.CountrySelectFragment"
+        tools:layout="@layout/fragment_country_select" />
+
+</navigation>
