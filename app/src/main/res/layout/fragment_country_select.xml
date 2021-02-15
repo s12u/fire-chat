@@ -11,7 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="24dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_search_field"
@@ -27,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/search_country_hint"
-                app:queryHandler="@{vm.queryByKeyword}" />
+                app:textHandler="@{vm.queryByKeyword}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

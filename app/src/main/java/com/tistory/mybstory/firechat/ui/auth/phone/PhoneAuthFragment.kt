@@ -1,4 +1,4 @@
-package com.tistory.mybstory.firechat.ui.auth.signup
+package com.tistory.mybstory.firechat.ui.auth.phone
 
 import android.os.Bundle
 import android.view.View
@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragment_phone_auth) {
 
-    private val viewModel: PhoneAuthViewModel by viewModels()
+    private val viewModel: PhoneAuthViewModel by viewModels(ownerProducer = { this })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,7 +25,8 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
         vm = viewModel
         btnBack.setOnClickListener { findNavController().navigateUp() }
         tvSelectedCountry.setOnClickListener { findNavController().navigate(R.id.action_phoneAuth_to_countrySelectFragment) }
-
+        btnNext.setOnClickListener { PhoneConfirmDialog().show(childFragmentManager, "") }
+        // set fragment result callback (country)
         setFragmentResultListener(REQUEST_KEY) { _, bundle ->
             val countryName = bundle.getString(BUNDLE_KEY_COUNTRY)
             setSelectedResult(countryName)

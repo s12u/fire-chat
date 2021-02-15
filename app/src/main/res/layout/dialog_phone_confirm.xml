@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.tistory.mybstory.firechat.ui.auth.phone.PhoneAuthViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:text="@{vm.displayPhoneNumber}"
+            tools:text="000-0000-0000"
+            android:gravity="start"
+            style="@style/TextAppearance.MaterialComponents.Headline6" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_confirmation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_phone_number"
+            android:layout_marginTop="24dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:text="@string/phone_auth_confirmation"
+            style="@style/TextAppearance.MaterialComponents.Body1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_confirmation"
+            android:text="@string/action_confirm"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toStartOf="@id/btn_confirm"
+            app:layout_constraintBottom_toBottomOf="@id/btn_confirm"
+            android:layout_marginEnd="8dp"
+            android:text="@string/action_cancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

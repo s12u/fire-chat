@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/phoneAuthFragment"
-        android:name="com.tistory.mybstory.firechat.ui.auth.signup.PhoneAuthFragment"
+        android:name="com.tistory.mybstory.firechat.ui.auth.phone.PhoneAuthFragment"
         tools:layout="@layout/fragment_phone_auth">
         <action
             android:id="@+id/action_phoneAuth_to_countrySelectFragment"

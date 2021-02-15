@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">FireChat</string>
 
+    <!-- common -->
+    <string name="action_confirm">Confirm</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="country_code_format">%s (+%s)</string>
+
     <!-- first run -->
     <string name="first_run_btn_sign_in">Sign in</string>
     <string name="first_run_btn_sign_up">Sign up</string>
@@ -9,8 +14,12 @@
     <string name="phone_auth_title">Please input your device phone number.</string>
     <string name="phone_auth_desc">Phone number authentication is required to use the service.</string>
     <string name="phone_auth_form_hint">Phone number</string>
+    <string name="phone_auth_next">Next</string>
+    <string name="phone_auth_confirmation">The verification SMS will be sent to this number.</string>
 
     <!-- search country -->
     <string name="search_country_hint">Search country</string>
+
+
 
 </resources>

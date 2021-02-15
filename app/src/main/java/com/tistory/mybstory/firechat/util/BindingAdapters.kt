@@ -31,7 +31,7 @@ fun validateNickname(textInputLayout: TextInputLayout, data: String) {
         if (!result) "User name must contain only letters, numbers or the underscore character." else ""
 }
 
-@BindingAdapter("app:queryHandler")
+@BindingAdapter("app:textHandler")
 fun bindQueryOnEditText(view: TextInputEditText, handler: (String) -> Unit) {
     view.addTextChangedListener(object : TextWatcherAdapter() {
         override fun afterTextChanged(text: Editable) {

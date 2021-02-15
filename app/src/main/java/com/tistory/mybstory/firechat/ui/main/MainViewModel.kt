@@ -24,14 +24,14 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     init {
-        viewModelScope.launch {
-            FirebaseAuth.getInstance().signInAnonymously().await()
-            val now = Instant.now()
-            chatRepository.getByBefore("DOjgluBkFWvLm4fn9xoX", Timestamp(now.epochSecond, now.nano))
-                .collect {
-                    Timber.e("size : ${it.size}")
-                    it.forEach { msg -> Timber.e(msg.value) }
-                }
-        }
+//        viewModelScope.launch {
+//            FirebaseAuth.getInstance().signInAnonymously().await()
+//            val now = Instant.now()
+//            chatRepository.getByBefore("DOjgluBkFWvLm4fn9xoX", Timestamp(now.epochSecond, now.nano))
+//                .collect {
+//                    Timber.e("size : ${it.size}")
+//                    it.forEach { msg -> Timber.e(msg.value) }
+//                }
+//        }
     }
 }

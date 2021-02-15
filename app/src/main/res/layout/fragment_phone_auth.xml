@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.tistory.mybstory.firechat.ui.auth.signup.PhoneAuthViewModel" />
+            type="com.tistory.mybstory.firechat.ui.auth.phone.PhoneAuthViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,12 +51,13 @@
             app:layout_constraintStart_toStartOf="@id/tv_page_desc"
             app:layout_constraintTop_toBottomOf="@id/tv_page_desc"
             android:layout_marginTop="64dp"
-            android:text="@{vm.selectedCountry.displayCountry}"
+            android:text="@{@string/country_code_format(vm.selectedCountry.displayCountry, vm.selectedCountry.code)}"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textAllCaps="false"
             tools:text="South Korea"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_phone_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,6 +67,7 @@
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tv_page_desc"
@@ -73,11 +75,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:hint="@string/phone_auth_form_hint"
                 android:inputType="phone"
+                android:maxLength="15"
+                app:textHandler="@{vm.handleTextInput}"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_phone_number"
+            android:layout_marginTop="8dp"
+            android:enabled="@{etPhoneNumber.text.length() > 0}"
+            android:text="@string/phone_auth_next" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

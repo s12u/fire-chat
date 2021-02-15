@@ -16,7 +16,8 @@ class CountrySelectViewModel : ViewModel() {
 
     private val countryList = Country::class.nestedClasses.map { it.createInstance() as Country }
     private val queryChannel = ConflatedBroadcastChannel("")
-    val filteredCountriesFlow = MutableStateFlow(countryList)
+    private val _filteredCountriesFlow = MutableStateFlow(countryList)
+    val filteredCountriesFlow: StateFlow<List<Country>> get() = _filteredCountriesFlow
 
     init {
         initQueryChannelFlow()
@@ -31,7 +32,7 @@ class CountrySelectViewModel : ViewModel() {
                     val cap = country.displayCountry.capitalize(Locale.getDefault())
                     cap.startsWith(query.capitalize(Locale.getDefault()))
                 }
-                filteredCountriesFlow.emit(result)
+                _filteredCountriesFlow.emit(result)
             }.launchIn(viewModelScope)
     }
 
