@@ -15,4 +15,5 @@ class EventBus {
 sealed class Event {
     object ShowProgress: Event()
     object HideProgress: Event()
+    object None: Event()
 }
