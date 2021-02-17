@@ -6,6 +6,8 @@ import com.tistory.mybstory.firechat.domain.Result
 import com.tistory.mybstory.firechat.domain.usecase.auth.SendVerificationCodeUseCase
 import com.tistory.mybstory.firechat.domain.usecase.auth.VerificationCodeSentResult
 import com.tistory.mybstory.firechat.ui.auth.phone.country.Country
+import com.tistory.mybstory.firechat.util.Event
+import com.tistory.mybstory.firechat.util.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -70,7 +72,6 @@ class PhoneAuthViewModel @Inject constructor(
                         _phoneAuthUiStateFlow.value = PhoneAuthUiState.Error(result.exception)
                     }
                     is Result.Loading -> {
-                        // TODO: Show progress
                         _phoneAuthUiStateFlow.value = PhoneAuthUiState.Loading
                     }
                 }

@@ -43,34 +43,8 @@ class PhoneConfirmDialog : DialogFragment() {
 
         btnCancel.setOnClickListener { dismiss() }
         btnConfirm.setOnClickListener {
-            // TODO: check if user's phone number exists & validate phone number
             viewModel.sendVerificationCode(requireActivity())
+            dismiss()
         }
-
-        viewModel.phoneAuthUiStateFlow
-            .onEach { handleUiState(it) }
-            .launchIn(lifecycleScope)
-    }
-
-    private fun handleUiState(state: PhoneAuthUiState) {
-        when (state) {
-            is PhoneAuthUiState.Success -> navigateToVerifyFragment()
-            is PhoneAuthUiState.Error -> {
-                // TODO: show error dialog or message
-            }
-            is PhoneAuthUiState.Loading -> {
-                // TODO: show loading
-                
-            }
-            else -> {}
-        }
-    }
-
-    private fun navigateToVerifyFragment() = lifecycleScope.launch {
-        val directions = PhoneAuthFragmentDirections.actionPhoneAuthToVerifyCodeFragment(
-            viewModel.phoneNumberFlow.stateIn(this).value,
-            viewModel.verificationDataFlow.value
-        )
-        requireParentFragment().findNavController().navigate(directions)
     }
 }
