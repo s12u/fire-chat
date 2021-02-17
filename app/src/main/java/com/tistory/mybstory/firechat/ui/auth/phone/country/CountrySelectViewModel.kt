@@ -1,4 +1,4 @@
-package com.tistory.mybstory.firechat.ui.auth.country
+package com.tistory.mybstory.firechat.ui.auth.phone.country
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

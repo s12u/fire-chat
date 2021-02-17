@@ -8,9 +8,11 @@ import androidx.navigation.fragment.findNavController
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
 import com.tistory.mybstory.firechat.databinding.FragmentPhoneAuthBinding
-import com.tistory.mybstory.firechat.ui.auth.country.getCountryByName
+import com.tistory.mybstory.firechat.ui.auth.phone.country.getCountryByName
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragment_phone_auth) {
 

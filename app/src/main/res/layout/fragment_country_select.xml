@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.tistory.mybstory.firechat.ui.auth.country.CountrySelectViewModel" />
+            type="com.tistory.mybstory.firechat.ui.auth.phone.country.CountrySelectViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

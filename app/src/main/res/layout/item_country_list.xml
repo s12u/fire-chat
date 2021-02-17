@@ -6,7 +6,7 @@
     <data>
         <variable
             name="country"
-            type="com.tistory.mybstory.firechat.ui.auth.country.Country" />
+            type="com.tistory.mybstory.firechat.ui.auth.phone.country.Country" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -9,7 +9,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
+        instance = this
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
@@ -17,5 +17,13 @@ class App : Application() {
 
     override fun onTerminate() {
         super.onTerminate()
+    }
+
+    companion object {
+        @JvmField
+        var instance: App? = null
+        @JvmStatic fun getApplication(): App {
+            return instance as App
+        }
     }
 }

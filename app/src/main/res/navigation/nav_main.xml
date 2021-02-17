@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.tistory.mybstory.firechat.ui.main.MainFragment"
-        tools:layout="@layout/fragment_main"></fragment>
+        tools:layout="@layout/fragment_main" />
 
     <fragment
         android:id="@+id/firstRunFragment"
@@ -27,11 +27,32 @@
         <action
             android:id="@+id/action_phoneAuth_to_countrySelectFragment"
             app:destination="@id/countrySelectFragment" />
+
+        <action
+            android:id="@+id/action_phoneAuth_to_verifyCodeFragment"
+            app:destination="@id/verifyCodeFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/countrySelectFragment"
-        android:name="com.tistory.mybstory.firechat.ui.auth.country.CountrySelectFragment"
+        android:name="com.tistory.mybstory.firechat.ui.auth.phone.country.CountrySelectFragment"
         tools:layout="@layout/fragment_country_select" />
+
+    <fragment
+        android:id="@+id/verifyCodeFragment"
+        android:name="com.tistory.mybstory.firechat.ui.auth.phone.code.VerifyCodeFragment"
+        tools:layout="@layout/fragment_verify_code">
+
+        <argument
+            android:name="phone_number"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="verification_data"
+            app:argType="com.tistory.mybstory.firechat.domain.usecase.auth.VerificationCodeSentResult"
+            app:nullable="false" />
+
+    </fragment>
 
 </navigation>

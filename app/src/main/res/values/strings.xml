@@ -17,6 +17,12 @@
     <string name="phone_auth_next">Next</string>
     <string name="phone_auth_confirmation">The verification SMS will be sent to this number.</string>
 
+    <!-- code verification -->
+    <string name="verification_code_resend">Resend verification code</string>
+    <string name="verification_code_title">Enter verification code</string>
+    <string name="verification_code_desc">Verification code has been sent to</string>
+    <string name="verification_action">Verify</string>
+
     <!-- search country -->
     <string name="search_country_hint">Search country</string>
 
