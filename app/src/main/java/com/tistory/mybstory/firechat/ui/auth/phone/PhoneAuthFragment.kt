@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -40,12 +41,17 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
             val countryName = bundle.getString(BUNDLE_KEY_COUNTRY)
             setSelectedResult(countryName)
         }
+        observeUiStateChanges()
+    }
+
+    private fun observeUiStateChanges() = launch {
         viewModel.phoneAuthUiStateFlow
             .onEach { handleUiState(it) }
-            .launchIn(lifecycleScope)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun handleUiState(state: PhoneAuthUiState) = launch {
+        Timber.e("state : $state")
         when (state) {
             is PhoneAuthUiState.Success -> {
                 hideProgress()
@@ -57,7 +63,9 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
             is PhoneAuthUiState.Loading -> {
                 showProgress()
             }
-            else -> {}
+            else -> {
+
+            }
         }
     }
 
@@ -74,7 +82,8 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
             viewModel.phoneNumberFlow.stateIn(this).value,
             viewModel.verificationDataFlow.value
         )
-        requireParentFragment().findNavController().navigate(directions)
+        findNavController().navigate(directions)
+        viewModel.resetUiState()
     }
 
     companion object {

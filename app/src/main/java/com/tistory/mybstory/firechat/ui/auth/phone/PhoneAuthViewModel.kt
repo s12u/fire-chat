@@ -45,7 +45,7 @@ class PhoneAuthViewModel @Inject constructor(
     )
     val verificationDataFlow: StateFlow<VerificationCodeSentResult> get() = _verificationDataFlow
 
-    private val _phoneAuthUiStateFlow: MutableStateFlow<PhoneAuthUiState> = MutableStateFlow(PhoneAuthUiState.Entered)
+    private val _phoneAuthUiStateFlow: MutableStateFlow<PhoneAuthUiState> = MutableStateFlow(PhoneAuthUiState.None)
     val phoneAuthUiStateFlow: StateFlow<PhoneAuthUiState> get() = _phoneAuthUiStateFlow
 
     fun selectCountry(country: Country) = viewModelScope.launch {
@@ -66,6 +66,7 @@ class PhoneAuthViewModel @Inject constructor(
                     }
                     is Result.Error -> {
                         // TODO: Handle error
+                        handleError()
                         Timber.e("Error : ${result.exception.message}")
                         _phoneAuthUiStateFlow.value = PhoneAuthUiState.Error(result.exception)
                     }
@@ -79,10 +80,18 @@ class PhoneAuthViewModel @Inject constructor(
     val handleTextInput = fun(text: String) {
         _phoneNumberFlow.value = text
     }
+
+    private fun handleError() {
+        _phoneAuthUiStateFlow.value = PhoneAuthUiState.None
+    }
+
+    fun resetUiState() {
+        _phoneAuthUiStateFlow.value = PhoneAuthUiState.None
+    }
 }
 
 sealed class PhoneAuthUiState {
-    object Entered: PhoneAuthUiState()
+    object None: PhoneAuthUiState()
     object Success: PhoneAuthUiState()
     object Loading: PhoneAuthUiState()
     data class Error(val exception: Throwable): PhoneAuthUiState()

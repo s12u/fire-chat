@@ -55,8 +55,8 @@ class SendVerificationCodeUseCase @Inject constructor(
                 .setCallbacks(callback)
                 .build()
 
-            offer(Result.Loading)
             PhoneAuthProvider.verifyPhoneNumber(options)
+            offer(Result.Loading)
             awaitClose()
         }
     }
