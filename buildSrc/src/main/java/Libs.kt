@@ -47,7 +47,7 @@ object Libs {
     const val EXT_JUNIT_KTX = "androidx.test.ext:junit-ktx:${Versions.EXT_JUNIT_KTX}"
     const val ARCH_TESTING = "androidx.arch.core:core-testing:${Versions.ARCH_TESTING}"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES_TEST}"
-    const val MOCKITO_CORE = "org.mockito:mockito-core:${Versions.MOCKITO_CORE}"
+    const val MOCKITO = "org.mockito:mockito-inline:${Versions.MOCKITO}"
     const val MOCKITO_KOTLIN = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.MOCKITO_KOTLIN}"
     const val HAMCREST = "org.hamcrest:hamcrest:${Versions.HAMCREST}"
 

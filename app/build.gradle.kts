@@ -114,7 +114,7 @@ dependencies {
 
     // Unit tests
     testImplementation(Libs.JUNIT)
-    testImplementation(Libs.MOCKITO_CORE)
+    testImplementation(Libs.MOCKITO)
     testImplementation(Libs.MOCKITO_KOTLIN)
     testImplementation(Libs.HAMCREST)
 }

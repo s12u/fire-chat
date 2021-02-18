@@ -61,7 +61,7 @@ object Versions {
     const val DESUGAR_LIBS = "1.1.1"
 
     const val JUNIT = "4.13.1"
-    const val MOCKITO_CORE = "3.7.7"
+    const val MOCKITO = "3.7.7"
     const val MOCKITO_KOTLIN = "2.2.0"
     const val HAMCREST = "2.2"
 
