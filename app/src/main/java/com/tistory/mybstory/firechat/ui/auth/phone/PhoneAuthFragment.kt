@@ -29,6 +29,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+        observeUiStateChanges()
     }
 
     private fun initUI() = with(binding) {
@@ -41,16 +42,15 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
             val countryName = bundle.getString(BUNDLE_KEY_COUNTRY)
             setSelectedResult(countryName)
         }
-        observeUiStateChanges()
     }
 
     private fun observeUiStateChanges() = launch {
         viewModel.phoneAuthUiStateFlow
-            .onEach { handleUiState(it) }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .onEach { handleSendCodeUiState(it) }
+            .launchIn(this)
     }
 
-    private fun handleUiState(state: PhoneAuthUiState) = launch {
+    private fun handleSendCodeUiState(state: PhoneAuthUiState) = launch {
         Timber.e("state : $state")
         when (state) {
             is PhoneAuthUiState.Success -> {

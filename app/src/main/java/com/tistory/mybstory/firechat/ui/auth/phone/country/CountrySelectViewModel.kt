@@ -30,7 +30,7 @@ class CountrySelectViewModel : ViewModel() {
                 Timber.e("query: $query")
                 val result = countryList.filter { country ->
                     val cap = country.displayCountry.capitalize(Locale.getDefault())
-                    cap.startsWith(query.capitalize(Locale.getDefault()))
+                    query.capitalize(Locale.getDefault()) in cap
                 }
                 _filteredCountriesFlow.emit(result)
             }.launchIn(viewModelScope)
