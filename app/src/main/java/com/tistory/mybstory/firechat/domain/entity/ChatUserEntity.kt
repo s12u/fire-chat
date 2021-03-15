@@ -1,11 +1,11 @@
-package com.tistory.mybstory.firechat.base.entity
+package com.tistory.mybstory.firechat.domain.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "chat_user")
-data class ChatUserEntity(
+data class ChatUserEntity (
     @PrimaryKey
     val id: String,
     @ColumnInfo(name = "name")

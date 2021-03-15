@@ -1,4 +1,4 @@
-package com.tistory.mybstory.firechat.base.model
+package com.tistory.mybstory.firechat.domain.model
 
 import com.google.firebase.Timestamp
 

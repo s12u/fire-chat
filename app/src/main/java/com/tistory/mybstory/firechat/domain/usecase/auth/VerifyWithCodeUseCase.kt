@@ -2,6 +2,7 @@ package com.tistory.mybstory.firechat.domain.usecase.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.tistory.mybstory.firechat.di.IoDispatcher
 import com.tistory.mybstory.firechat.domain.Result
@@ -29,7 +30,7 @@ class VerifyWithCodeUseCase @Inject constructor(
             offer(Result.Loading)
             auth.signInWithCredential(credential).addOnCompleteListener { task->
                 if (task.isSuccessful) {
-                    offer(Result.Success(PhoneNumberVerifyResult(true)))
+                    offer(Result.Success(PhoneNumberVerifyResult(true, credential)))
                     close()
                 } else {
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -43,5 +44,6 @@ class VerifyWithCodeUseCase @Inject constructor(
 }
 
 data class PhoneNumberVerifyResult(
-    val isValid: Boolean
+    val isValid: Boolean,
+    val credential: PhoneAuthCredential? = null
 )

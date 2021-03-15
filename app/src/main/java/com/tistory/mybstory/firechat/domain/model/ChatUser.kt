@@ -1,4 +1,4 @@
-package com.tistory.mybstory.firechat.base.model
+package com.tistory.mybstory.firechat.domain.model
 
 data class ChatUser(
     val id: String,

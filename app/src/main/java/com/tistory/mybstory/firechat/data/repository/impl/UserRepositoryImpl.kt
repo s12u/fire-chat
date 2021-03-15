@@ -2,7 +2,7 @@ package com.tistory.mybstory.firechat.data.repository.impl
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tistory.mybstory.firechat.base.model.ChatUser
+import com.tistory.mybstory.firechat.domain.model.ChatUser
 import com.tistory.mybstory.firechat.data.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

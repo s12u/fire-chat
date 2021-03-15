@@ -1,7 +1,7 @@
 package com.tistory.mybstory.firechat.data.repository
 
 import com.google.firebase.Timestamp
-import com.tistory.mybstory.firechat.base.model.ChatMessage
+import com.tistory.mybstory.firechat.domain.model.ChatMessage
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {

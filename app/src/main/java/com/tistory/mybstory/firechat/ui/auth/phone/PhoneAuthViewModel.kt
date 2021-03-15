@@ -28,7 +28,7 @@ class PhoneAuthViewModel @Inject constructor(
     private val _phoneNumberFlow = MutableStateFlow("")
     val phoneNumberFlow: Flow<String>
         get() = _phoneNumberFlow.map { value ->
-            "+${_selectedCountryFlow.value.code}$value"
+            "+${_selectedCountryFlow.value.code} $value"
         }
 
     val displayPhoneNumber: LiveData<String>
