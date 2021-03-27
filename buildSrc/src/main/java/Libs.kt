@@ -11,6 +11,7 @@ object Libs {
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT}"
     const val VIEWPAGER2 = "androidx.viewpager2:viewpager2:${Versions.VIEWPAGER2}"
     const val MATERIAL_COMPONENTS = "com.google.android.material:material:${Versions.MATERIAL_COMPONENTS}"
+    const val ANDROIDX_BROWSER = "androidx.browser:browser:${Versions.ANDROIDX_BROWSER}"
 
     const val LIFECYCLE_LIVEDATA_KTX = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.LIFECYCLE_LIVEDATA_KTX}"
     const val LIFECYCLE_VIEWMODEL_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE_VIEWMODEL_KTX}"
@@ -31,6 +32,7 @@ object Libs {
 
     const val FIREBASE_AUTH_KTX = "com.google.firebase:firebase-auth-ktx:${Versions.FIREBASE_AUTH_KTX}"
     const val FIREBASE_FIRESTORE_KTX = "com.google.firebase:firebase-firestore-ktx:${Versions.FIREBASE_FIRESTORE_KTX}"
+    const val FIREBASE_STORAGE_KTX = "com.google.firebase:firebase-storage-ktx:${Versions.FIREBASE_STORAGE_KTX}"
 
     const val ROOM_RUNTIME = "androidx.room:room-runtime:${Versions.ROOM_RUNTIME}"
     const val ROOM_COMPILER = "androidx.room:room-compiler:${Versions.ROOM_COMPILER}"

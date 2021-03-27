@@ -1,11 +1,16 @@
 package com.tistory.mybstory.firechat.util
 
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 class DateUtils {
     companion object {
+
+        @JvmStatic
+        fun now() = Instant.now().atZone(ZoneId.systemDefault())
 
         @JvmStatic
         fun formatDateToLocalDate(dateTime: String): LocalDate =

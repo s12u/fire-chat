@@ -67,6 +67,7 @@ dependencies {
     implementation(Libs.CONSTRAINT_LAYOUT)
     implementation(Libs.VIEWPAGER2)
     implementation(Libs.MATERIAL_COMPONENTS)
+    implementation(Libs.ANDROIDX_BROWSER)
 
     // Architecture components
     testImplementation(Libs.ARCH_TESTING)
@@ -96,6 +97,7 @@ dependencies {
     // Firebase
     implementation(Libs.FIREBASE_AUTH_KTX)
     implementation(Libs.FIREBASE_FIRESTORE_KTX)
+    implementation(Libs.FIREBASE_STORAGE_KTX)
 
     // Glide
     implementation(Libs.GLIDE)

@@ -4,8 +4,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.tistory.mybstory.firechat.domain.model.ChatMessage
 import com.tistory.mybstory.firechat.data.repository.ChatRepository
+import com.tistory.mybstory.firechat.domain.model.ChatMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*

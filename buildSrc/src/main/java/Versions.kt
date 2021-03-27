@@ -27,6 +27,7 @@ object Versions {
     const val CONSTRAINT_LAYOUT = "2.0.4"
     const val VIEWPAGER2 = "1.1.0-alpha01"
     const val MATERIAL_COMPONENTS = "1.3.0"
+    const val ANDROIDX_BROWSER = "1.3.0"
     const val ARCH_TESTING = "2.1.0"
 
     const val LIFECYCLE_LIVEDATA_KTX = "2.3.0"
@@ -48,6 +49,7 @@ object Versions {
 
     const val FIREBASE_AUTH_KTX = "20.0.2"
     const val FIREBASE_FIRESTORE_KTX = "22.1.0"
+    const val FIREBASE_STORAGE_KTX = "19.2.1"
 
     const val ROOM_RUNTIME = "2.3.0-beta01"
     const val ROOM_COMPILER = "2.3.0-beta01"

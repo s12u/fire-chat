@@ -1,6 +1,5 @@
 package com.tistory.mybstory.firechat.domain.usecase.auth
 
-import android.app.Activity
 import android.os.Parcelable
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -13,7 +12,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import javax.inject.Inject

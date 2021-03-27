@@ -3,7 +3,7 @@ package com.tistory.mybstory.firechat.ui.auth.phone.code
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
 import com.tistory.mybstory.firechat.base.ui.hideKeyboard
@@ -53,6 +53,9 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
         viewModel.verifyUiStateFlow
             .onEach { handleVerifyCodeUiState(it) }
             .launchIn(this)
+
+        viewModel.isNewUserLiveData
+            .observe(viewLifecycleOwner) { handleNewUserState(it) }
     }
 
     private fun handleVerifyCodeUiState(state: VerifyUiState) = launch {
@@ -90,6 +93,14 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
             }
             else -> {
             }
+        }
+    }
+
+    private fun handleNewUserState(isNewUser: Boolean) {
+        if (isNewUser) {
+            findNavController().navigate(R.id.action_verifyCode_to_newProfileFragment)
+        } else {
+            findNavController().navigate(R.id.action_verifyCode_to_mainFragment)
         }
     }
 }
