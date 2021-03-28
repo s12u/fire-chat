@@ -1,8 +1,8 @@
 package com.tistory.mybstory.firechat.domain.model
 
 data class UserProfile(
-    val uid: String,
-    val name: String,
-    val profileUrl: String,
-    val thumbUrl: String
+    var uid: String = "",
+    var name: String = "",
+    var profileUrl: String = "",
+    var thumbUrl: String = ""
 )

@@ -5,6 +5,7 @@
     <string name="action_confirm">Confirm</string>
     <string name="action_cancel">Cancel</string>
     <string name="country_code_format">%s (+%s)</string>
+    <string name="tap_twice_to_exit">Tap one more time to exit</string>
 
     <!-- first run -->
     <string name="first_run_btn_sign_in">Sign in</string>
@@ -26,6 +27,7 @@
     <!-- search country -->
     <string name="search_country_hint">Search country</string>
 
-
+    <!-- new profile -->
+    <string name="new_profile_name_hint">Input your name</string>
 
 </resources>

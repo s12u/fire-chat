@@ -50,15 +50,12 @@ class ImageSelectBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun openCamera() {
-//        Timber.e("uri : ${requireContext().getTempImageUri()}")
         tempImageUri = getTempImageUri()
         cameraActivityLauncher.launch(tempImageUri)
-//        dismiss()
     }
 
     private fun openImagePicker() {
         imagePickerActivityLauncher.launch("image/*")
-//        dismiss()
     }
 
     private val requestCameraPermission = registerForActivityResult(

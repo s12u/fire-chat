@@ -2,12 +2,14 @@ package com.tistory.mybstory.firechat.ui.auth.phone
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
+import com.tistory.mybstory.firechat.base.ui.showKeyboard
 import com.tistory.mybstory.firechat.databinding.FragmentPhoneAuthBinding
 import com.tistory.mybstory.firechat.ui.auth.phone.country.getCountryByName
 import com.tistory.mybstory.firechat.util.hideProgress
@@ -37,6 +39,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
         btnBack.setOnClickListener { findNavController().navigateUp() }
         tvSelectedCountry.setOnClickListener { findNavController().navigate(R.id.action_phoneAuth_to_countrySelectFragment) }
         btnNext.setOnClickListener { PhoneConfirmDialog().show(childFragmentManager, "") }
+        showKeyboard(etPhoneNumber)
         // set fragment result callback (country)
         setFragmentResultListener(REQUEST_KEY) { _, bundle ->
             val countryName = bundle.getString(BUNDLE_KEY_COUNTRY)
@@ -85,6 +88,8 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
         findNavController().navigate(directions)
         viewModel.resetUiState()
     }
+
+    override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = null
 
     companion object {
         const val REQUEST_KEY = "COUNTRY_SELECT_REQUEST"

@@ -2,11 +2,13 @@ package com.tistory.mybstory.firechat.ui.auth.phone.code
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
 import com.tistory.mybstory.firechat.base.ui.hideKeyboard
+import com.tistory.mybstory.firechat.base.ui.showKeyboard
 import com.tistory.mybstory.firechat.databinding.FragmentVerifyCodeBinding
 import com.tistory.mybstory.firechat.ui.auth.phone.PhoneAuthUiState
 import com.tistory.mybstory.firechat.util.hideProgress
@@ -41,7 +43,7 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
             viewModel.resendVerificationCode(requireActivity())
         }
 
-        // TODO: show counter text
+        showKeyboard(etVerificationCode)
         // TODO: clear text & show dialog on expired
     }
 
@@ -103,4 +105,6 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
             findNavController().navigate(R.id.action_verifyCode_to_mainFragment)
         }
     }
+
+    override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = null
 }

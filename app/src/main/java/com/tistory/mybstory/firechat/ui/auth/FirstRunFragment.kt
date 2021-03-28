@@ -2,6 +2,7 @@ package com.tistory.mybstory.firechat.ui.auth
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tistory.mybstory.firechat.R
@@ -31,4 +32,5 @@ class FirstRunFragment : BaseFragment<FragmentFirstRunBinding> (R.layout.fragmen
         }
     }
 
+    override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = null
 }

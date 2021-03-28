@@ -2,6 +2,7 @@ package com.tistory.mybstory.firechat.ui.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
@@ -19,4 +20,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             viewModel = mainViewModel
         }
     }
+
+    override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = null
 }

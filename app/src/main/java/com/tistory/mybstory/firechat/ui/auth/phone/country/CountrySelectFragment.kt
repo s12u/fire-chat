@@ -2,6 +2,7 @@ package com.tistory.mybstory.firechat.ui.auth.phone.country
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -56,6 +57,8 @@ class CountrySelectFragment :
         const val REQUEST_KEY = "COUNTRY_SELECT_REQUEST"
         const val BUNDLE_KEY_COUNTRY = "COUNTRY"
     }
+
+    override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = null
 }
 
 

@@ -41,7 +41,6 @@ class VerifyCodeViewModel @Inject constructor(
 
     @ExperimentalCoroutinesApi
     fun verifyPhoneNumberWithCode() {
-        // TODO: verify phone number with user input (code)
         verificationData?.let { data ->
             verifyWithCodeUseCase(
                 data.verificationId
@@ -81,7 +80,6 @@ class VerifyCodeViewModel @Inject constructor(
                 Timber.e("code match!")
                 _verifyUiStateFlow.value = VerifyUiState.Success
                 signInWithAuthCredential(result.data.credential)
-                // TODO: set result credential
             }
             is Result.Error -> {
                 handleVerificationError(result.exception)
@@ -102,7 +100,8 @@ class VerifyCodeViewModel @Inject constructor(
             }
             is Result.Error -> {
                 // TODO: Handle error
-//                            handleError()
+
+//              handleError()
                 Timber.e("Error : ${result.exception.message}")
                 _phoneAuthUiStateFlow.value = PhoneAuthUiState.Error(result.exception)
             }
