@@ -1,13 +1,10 @@
 package com.tistory.mybstory.firechat.domain.usecase.profile
 
 import android.net.Uri
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.tistory.mybstory.firechat.di.IoDispatcher
 import com.tistory.mybstory.firechat.domain.Result
 import com.tistory.mybstory.firechat.domain.UseCase
-import com.tistory.mybstory.firechat.domain.model.UserProfile
 import com.tistory.mybstory.firechat.util.DateUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi

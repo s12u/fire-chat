@@ -1,7 +1,6 @@
 package com.tistory.mybstory.firechat.domain.usecase.auth
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.tistory.mybstory.firechat.di.IoDispatcher
@@ -9,13 +8,11 @@ import com.tistory.mybstory.firechat.domain.Result
 import com.tistory.mybstory.firechat.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 class VerifyWithCodeUseCase @Inject constructor(
     private val auth: FirebaseAuth,
@@ -33,9 +30,9 @@ class VerifyWithCodeUseCase @Inject constructor(
                     offer(Result.Success(PhoneNumberVerifyResult(true, credential)))
                     close()
                 } else {
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        cancel(CancellationException("Invalid code"))
-                    }
+                    Timber.e("verification exception : ${task.exception}")
+                    offer(Result.Error(task.exception ?: Error("Code verification failed.")))
+                    close()
                 }
             }
             awaitClose()

@@ -1,7 +1,5 @@
 package com.tistory.mybstory.firechat.ui.auth.profile
 
-import androidx.databinding.Bindable
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +10,6 @@ import com.tistory.mybstory.firechat.domain.model.UserProfile
 import com.tistory.mybstory.firechat.domain.usecase.profile.UpdateProfileUseCase
 import com.tistory.mybstory.firechat.domain.usecase.profile.UploadProfileImageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -88,8 +85,7 @@ class NewProfileViewModel @Inject constructor(
                         }
                         else -> { }
                     }
-                }.flowOn(Dispatchers.IO)
-                .launchIn(viewModelScope)
+                }.launchIn(viewModelScope)
         }
     }
 

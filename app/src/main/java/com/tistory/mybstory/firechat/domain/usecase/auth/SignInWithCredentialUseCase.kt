@@ -8,14 +8,11 @@ import com.tistory.mybstory.firechat.domain.Result
 import com.tistory.mybstory.firechat.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.parcelize.Parcelize
-import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 
 class SignInWithCredentialUseCase @Inject constructor(
@@ -32,8 +29,8 @@ class SignInWithCredentialUseCase @Inject constructor(
                     offer(Result.Success(signInResult))
                     close()
                 } else {
-                    Timber.e("sign in error: ${task.exception?.message}")
-                    cancel(CancellationException(task.exception?.cause))
+                    offer(Result.Error(task.exception ?: Error("Sign in failed.")))
+                    close()
                 }
             }
             offer(Result.Loading)

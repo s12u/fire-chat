@@ -5,13 +5,14 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
 import com.tistory.mybstory.firechat.base.ui.hideKeyboard
 import com.tistory.mybstory.firechat.base.ui.showKeyboard
 import com.tistory.mybstory.firechat.databinding.FragmentVerifyCodeBinding
-import com.tistory.mybstory.firechat.ui.auth.phone.PhoneAuthUiState
 import com.tistory.mybstory.firechat.util.hideProgress
+import com.tistory.mybstory.firechat.util.showErrorSnackBar
 import com.tistory.mybstory.firechat.util.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,6 +44,7 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
             viewModel.resendVerificationCode(requireActivity())
         }
 
+        viewModel.resendVerificationCode(requireActivity())
         showKeyboard(etVerificationCode)
         // TODO: clear text & show dialog on expired
     }
@@ -56,27 +58,29 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
             .onEach { handleVerifyCodeUiState(it) }
             .launchIn(this)
 
-        viewModel.isNewUserLiveData
-            .observe(viewLifecycleOwner) { handleNewUserState(it) }
+
+
+        viewModel.signInStateFlow
+            .onEach { handleSignInState(it) }
+            .launchIn(this)
     }
 
     private fun handleVerifyCodeUiState(state: VerifyUiState) = launch {
         Timber.e("state : $state")
         when (state) {
             is VerifyUiState.Success -> {
-                // TODO: go to next page
                 hideProgress()
+                binding.tilVerificationCode.error = ""
             }
             is VerifyUiState.Error -> {
-                // TODO: show error message
+                handleVerificationError(state.exception)
                 hideProgress()
             }
             is VerifyUiState.Loading -> {
                 showProgress()
+                binding.tilVerificationCode.error = ""
             }
-            else -> {
-
-            }
+            else -> { }
         }
     }
 
@@ -88,21 +92,59 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
             }
             is PhoneAuthUiState.Error -> {
                 // TODO: show error message
+                handleResentError(state.exception)
                 hideProgress()
             }
             is PhoneAuthUiState.Loading -> {
                 showProgress()
             }
-            else -> {
+            else -> { }
+        }
+    }
+
+    private fun handleSignInState(state: SignInState) {
+        when (state) {
+            is SignInState.Success -> {
+                hideProgress()
+                if (state.isNewUser) {
+                    findNavController().navigate(R.id.action_verifyCode_to_newProfileFragment)
+                } else {
+                    findNavController().navigate(R.id.action_verifyCode_to_mainFragment)
+                }
+            }
+            is SignInState.Error -> {
+                hideProgress()
+                handleSignInError(state.exception)
+            }
+            is SignInState.Loading -> {
+                showProgress()
+            }
+            else -> {}
+        }
+    }
+
+    private fun handleVerificationError(e: Throwable) {
+        when (e) {
+            is FirebaseAuthInvalidCredentialsException -> {
+                binding.tilVerificationCode.error = getString(R.string.error_invalid_verification_code)
             }
         }
     }
 
-    private fun handleNewUserState(isNewUser: Boolean) {
-        if (isNewUser) {
-            findNavController().navigate(R.id.action_verifyCode_to_newProfileFragment)
-        } else {
-            findNavController().navigate(R.id.action_verifyCode_to_mainFragment)
+    private fun handleResentError(e: Throwable) {
+        val errorMessage = when (e) {
+            is FirebaseAuthInvalidCredentialsException -> { getString(R.string.error_invalid_number) }
+            else -> { getString(R.string.error_unknown) }
+        }
+        showErrorSnackBar(errorMessage)
+        findNavController().navigateUp()
+    }
+
+    private fun handleSignInError(e: Throwable) {
+        when (e) {
+            is FirebaseAuthInvalidCredentialsException -> {
+                // TODO: dialog?
+            }
         }
     }
 

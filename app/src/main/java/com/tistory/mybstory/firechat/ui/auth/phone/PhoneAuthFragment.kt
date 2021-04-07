@@ -5,22 +5,14 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
 import com.tistory.mybstory.firechat.base.ui.showKeyboard
 import com.tistory.mybstory.firechat.databinding.FragmentPhoneAuthBinding
 import com.tistory.mybstory.firechat.ui.auth.phone.country.getCountryByName
-import com.tistory.mybstory.firechat.util.hideProgress
-import com.tistory.mybstory.firechat.util.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -31,7 +23,6 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        observeUiStateChanges()
     }
 
     private fun initUI() = with(binding) {
@@ -47,46 +38,12 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(R.layout.fragme
         }
     }
 
-    private fun observeUiStateChanges() = launch {
-        viewModel.phoneAuthUiStateFlow
-            .onEach { handleSendCodeUiState(it) }
-            .launchIn(this)
-    }
-
-    private fun handleSendCodeUiState(state: PhoneAuthUiState) = launch {
-        Timber.e("state : $state")
-        when (state) {
-            is PhoneAuthUiState.Success -> {
-                hideProgress()
-                navigateToVerifyFragment()
-            }
-            is PhoneAuthUiState.Error -> {
-                hideProgress()
-            }
-            is PhoneAuthUiState.Loading -> {
-                showProgress()
-            }
-            else -> {
-
-            }
-        }
-    }
-
     private fun setSelectedResult(data: String?) {
         data?.let {
             getCountryByName(it)?.let { country ->
                 viewModel.selectCountry(country)
             }
         }
-    }
-
-    private fun navigateToVerifyFragment() = lifecycleScope.launch {
-        val directions = PhoneAuthFragmentDirections.actionPhoneAuthToVerifyCodeFragment(
-            viewModel.phoneNumberFlow.stateIn(this).value,
-            viewModel.verificationDataFlow.value
-        )
-        findNavController().navigate(directions)
-        viewModel.resetUiState()
     }
 
     override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = null

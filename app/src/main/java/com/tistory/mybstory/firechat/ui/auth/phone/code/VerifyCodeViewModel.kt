@@ -1,13 +1,14 @@
 package com.tistory.mybstory.firechat.ui.auth.phone.code
 
 import android.app.Activity
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.PhoneAuthCredential
 import com.tistory.mybstory.firechat.domain.Result
 import com.tistory.mybstory.firechat.domain.usecase.auth.*
-import com.tistory.mybstory.firechat.ui.auth.phone.PhoneAuthUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,8 +37,8 @@ class VerifyCodeViewModel @Inject constructor(
     private val _verifyUiStateFlow: MutableStateFlow<VerifyUiState> = MutableStateFlow(VerifyUiState.None)
     val verifyUiStateFlow: StateFlow<VerifyUiState> get() = _verifyUiStateFlow
 
-    private val _isNewUserLiveData = MutableLiveData<Boolean>()
-    val isNewUserLiveData get(): LiveData<Boolean> = _isNewUserLiveData
+    private val _signInStateFlow: MutableStateFlow<SignInState> = MutableStateFlow(SignInState.None)
+    val signInStateFlow: StateFlow<SignInState> get() = _signInStateFlow
 
     @ExperimentalCoroutinesApi
     fun verifyPhoneNumberWithCode() {
@@ -82,7 +83,6 @@ class VerifyCodeViewModel @Inject constructor(
                 signInWithAuthCredential(result.data.credential)
             }
             is Result.Error -> {
-                handleVerificationError(result.exception)
                 _verifyUiStateFlow.value = VerifyUiState.Error(result.exception)
             }
             is Result.Loading -> {
@@ -95,14 +95,15 @@ class VerifyCodeViewModel @Inject constructor(
         when (result) {
             is Result.Success -> {
                 Timber.e("Success! verification id: ${result.data}")
-                verificationData = result.data
-                _phoneAuthUiStateFlow.value = PhoneAuthUiState.Success
+                if (result.data.autoSignIn) {
+                    signInWithAuthCredential(result.data.authCredential)
+                    _phoneAuthUiStateFlow.value = PhoneAuthUiState.Success
+                } else {
+                    verificationData = result.data
+                    _phoneAuthUiStateFlow.value = PhoneAuthUiState.Success
+                }
             }
             is Result.Error -> {
-                // TODO: Handle error
-
-//              handleError()
-                Timber.e("Error : ${result.exception.message}")
                 _phoneAuthUiStateFlow.value = PhoneAuthUiState.Error(result.exception)
             }
             is Result.Loading -> {
@@ -114,31 +115,29 @@ class VerifyCodeViewModel @Inject constructor(
     private fun handleSignInWithAuthResult(result: Result<SignInWithCredentialResult>) {
         when (result) {
             is Result.Success-> {
-                Timber.e("sign in success! new user : ${result.data.isNewUser}")
-                _isNewUserLiveData.value = result.data.isNewUser
+//                Timber.e("sign in success! new user : ${result.data.isNewUser}")
+                _signInStateFlow.value = SignInState.Success(result.data.isNewUser)
             }
             is Result.Error-> {
-                Timber.e("sign in exception! : ${result.exception.localizedMessage}")
+                Timber.e("sign in exception! : ${result.exception}")
+                _signInStateFlow.value = SignInState.Error(result.exception)
             }
             is Result.Loading->{
-
+                _signInStateFlow.value = SignInState.Loading
             }
-        }
-    }
-
-    private fun handleVerificationError(e: Throwable) {
-        Timber.e("verification error! : ${e.localizedMessage}")
-        when (e) {
-            is CancellationException -> {
-                // TODO: show error (invalid verification code)
-            }
-            else ->{}
         }
     }
 
     val handleTextInput = fun(text: String) {
         _verificationCodeStateFlow.value = text
     }
+}
+
+sealed class PhoneAuthUiState {
+    object None: PhoneAuthUiState()
+    object Success: PhoneAuthUiState()
+    object Loading: PhoneAuthUiState()
+    data class Error(val exception: Throwable): PhoneAuthUiState()
 }
 
 sealed class VerifyUiState {
@@ -148,3 +147,9 @@ sealed class VerifyUiState {
     data class Error(val exception: Throwable): VerifyUiState()
 }
 
+sealed class SignInState {
+    object None: SignInState()
+    data class Success(val isNewUser: Boolean): SignInState()
+    object Loading: SignInState()
+    data class Error(val exception: Throwable): SignInState()
+}

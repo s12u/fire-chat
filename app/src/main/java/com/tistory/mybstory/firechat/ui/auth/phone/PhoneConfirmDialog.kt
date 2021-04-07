@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.databinding.DialogPhoneConfirmBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class PhoneConfirmDialog : DialogFragment() {
@@ -37,8 +41,15 @@ class PhoneConfirmDialog : DialogFragment() {
 
         btnCancel.setOnClickListener { dismiss() }
         btnConfirm.setOnClickListener {
-            viewModel.sendVerificationCode(requireActivity())
+            navigateToVerificationFragment()
             dismiss()
         }
+    }
+
+    private fun navigateToVerificationFragment() = lifecycleScope.launch {
+        val parentFragment = requireParentFragment()
+        val phoneNumber = viewModel.phoneNumberFlow.stateIn(this).value
+        val directions = PhoneAuthFragmentDirections.actionPhoneAuthToVerifyCodeFragment(phoneNumber)
+        parentFragment.findNavController().navigate(directions)
     }
 }

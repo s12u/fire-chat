@@ -12,7 +12,6 @@ import com.tistory.mybstory.firechat.domain.Result
 import com.tistory.mybstory.firechat.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -20,7 +19,6 @@ import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 class SendVerificationCodeUseCase @Inject constructor(
     private val auth: FirebaseAuth,
@@ -36,16 +34,36 @@ class SendVerificationCodeUseCase @Inject constructor(
                     verificationId: String,
                     token: PhoneAuthProvider.ForceResendingToken
                 ) {
-                    offer(Result.Success(VerificationCodeSentResult(verificationId, token)))
-                    close()
+                    offer(
+                        Result.Success(
+                            VerificationCodeSentResult(
+                                verificationId,
+                                token,
+                                null,
+                                false
+                            )
+                        )
+                    )
                 }
 
                 override fun onVerificationFailed(e: FirebaseException) {
-                    cancel(CancellationException(e.cause))
+                    offer(Result.Error(e))
+                    close()
                 }
 
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                    // do nothing
+                    Timber.e("auto sign in ?")
+                    // TODO: exception on real phone sms. :(
+                    offer(
+                        Result.Success(
+                            VerificationCodeSentResult(
+                                "",
+                                authCredential = credential,
+                                autoSignIn = true
+                            )
+                        )
+                    )
+                    close()
                 }
             }
             val options = PhoneAuthOptions.newBuilder(auth)
@@ -57,7 +75,9 @@ class SendVerificationCodeUseCase @Inject constructor(
 
             PhoneAuthProvider.verifyPhoneNumber(options)
             offer(Result.Loading)
-            awaitClose()
+            awaitClose {
+
+            }
         }
     }
 }
@@ -65,5 +85,7 @@ class SendVerificationCodeUseCase @Inject constructor(
 @Parcelize
 data class VerificationCodeSentResult(
     val verificationId: String,
-    val resendingToken: PhoneAuthProvider.ForceResendingToken?
+    val resendingToken: PhoneAuthProvider.ForceResendingToken? = null,
+    val authCredential: PhoneAuthCredential? = null,
+    val autoSignIn: Boolean
 ) : Parcelable

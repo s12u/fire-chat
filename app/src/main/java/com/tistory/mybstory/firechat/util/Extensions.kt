@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.snackbar.Snackbar
 import com.tistory.mybstory.firechat.ui.MainActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -32,5 +33,9 @@ fun Fragment.hideProgress() = lifecycleScope.launch {
     val activity = requireActivity() as MainActivity
     activity.eventBus.postEvent(Event.HideProgress)
     activity.eventBus.postEvent(Event.None)
+}
+
+fun Fragment.showErrorSnackBar(errorMessage: String) {
+    Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_SHORT).show()
 }
 

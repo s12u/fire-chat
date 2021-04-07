@@ -30,4 +30,10 @@
     <!-- new profile -->
     <string name="new_profile_name_hint">Input your name</string>
 
+    <!-- error message -->
+    <string name="error_invalid_number">Make sure that entered a valid phone number.</string>
+    <string name="error_sign_in_failed">Sign in failed</string>
+    <string name="error_invalid_verification_code">Invalid or expired verification code.</string>
+    <string name="error_unknown">Unknown error</string>
+
 </resources>
