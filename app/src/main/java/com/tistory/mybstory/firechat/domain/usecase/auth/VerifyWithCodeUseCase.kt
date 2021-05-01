@@ -27,7 +27,8 @@ class VerifyWithCodeUseCase @Inject constructor(
             offer(Result.Loading)
             auth.signInWithCredential(credential).addOnCompleteListener { task->
                 if (task.isSuccessful) {
-                    offer(Result.Success(PhoneNumberVerifyResult(true, credential)))
+                    val isNewUser = task.result?.user?.displayName.isNullOrEmpty()
+                    offer(Result.Success(PhoneNumberVerifyResult(true, credential, isNewUser)))
                     close()
                 } else {
                     Timber.e("verification exception : ${task.exception}")
@@ -42,5 +43,6 @@ class VerifyWithCodeUseCase @Inject constructor(
 
 data class PhoneNumberVerifyResult(
     val isValid: Boolean,
-    val credential: PhoneAuthCredential? = null
+    val credential: PhoneAuthCredential? = null,
+    val isNewUser: Boolean
 )

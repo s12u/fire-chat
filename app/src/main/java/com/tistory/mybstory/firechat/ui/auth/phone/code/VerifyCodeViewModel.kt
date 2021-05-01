@@ -27,7 +27,7 @@ class VerifyCodeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val phoneNumberLiveData: LiveData<String> = handle.getLiveData("phone_number")
-    private var verificationData: VerificationCodeSentResult? = handle.get("verification_data")
+    private var verificationData: VerificationCodeSentResult? = null
 
     private var _verificationCodeStateFlow = MutableStateFlow("")
 
@@ -40,6 +40,20 @@ class VerifyCodeViewModel @Inject constructor(
     private val _signInStateFlow: MutableStateFlow<SignInState> = MutableStateFlow(SignInState.None)
     val signInStateFlow: StateFlow<SignInState> get() = _signInStateFlow
 
+    // send verification code to given phone number
+    @ExperimentalCoroutinesApi
+    fun sendVerificationCode(activity: Activity) = viewModelScope.launch {
+        val phoneNumber = phoneNumberLiveData.value
+        Timber.e("phone number: $phoneNumber")
+        phoneNumber?.let {
+            sendVerificationCodeUseCase(activity to phoneNumber)
+                .onEach { result ->
+                    handleCodeSentResult(result)
+                }.launchIn(viewModelScope)
+        }
+    }
+
+    // verify code with user input
     @ExperimentalCoroutinesApi
     fun verifyPhoneNumberWithCode() {
         verificationData?.let { data ->
@@ -52,18 +66,7 @@ class VerifyCodeViewModel @Inject constructor(
         }
     }
 
-    @ExperimentalCoroutinesApi
-    fun resendVerificationCode(activity: Activity) = viewModelScope.launch {
-        val phoneNumber = phoneNumberLiveData.value
-        Timber.e("phone number: $phoneNumber")
-        phoneNumber?.let {
-            sendVerificationCodeUseCase(activity to phoneNumber)
-                .onEach { result ->
-                    handleCodeResentResult(result)
-                }.launchIn(viewModelScope)
-        }
-    }
-
+    // sign in with given auth credential
     @ExperimentalCoroutinesApi
     private fun signInWithAuthCredential(credential: PhoneAuthCredential?) {
         credential?.let { phoneAuthCredential->
@@ -75,23 +78,8 @@ class VerifyCodeViewModel @Inject constructor(
         }
     }
 
-    private fun handleVerificationResult(result: Result<PhoneNumberVerifyResult>) {
-        when (result) {
-            is Result.Success -> {
-                Timber.e("code match!")
-                _verifyUiStateFlow.value = VerifyUiState.Success
-                signInWithAuthCredential(result.data.credential)
-            }
-            is Result.Error -> {
-                _verifyUiStateFlow.value = VerifyUiState.Error(result.exception)
-            }
-            is Result.Loading -> {
-                _verifyUiStateFlow.value = VerifyUiState.Loading
-            }
-        }
-    }
-
-    private fun handleCodeResentResult(result: Result<VerificationCodeSentResult>) {
+    // handle sms code sent response
+    private fun handleCodeSentResult(result: Result<VerificationCodeSentResult>) {
         when (result) {
             is Result.Success -> {
                 Timber.e("Success! verification id: ${result.data}")
@@ -112,10 +100,29 @@ class VerifyCodeViewModel @Inject constructor(
         }
     }
 
+    // handle sms code verification result
+    private fun handleVerificationResult(result: Result<PhoneNumberVerifyResult>) {
+        when (result) {
+            is Result.Success -> {
+                Timber.e("code match!")
+                _verifyUiStateFlow.value = VerifyUiState.Success
+                /** Don't call signInWithAuthCredential() because of exception(FirebaseAuthInvalidCredentialsException) **/
+                _signInStateFlow.value = SignInState.Success(result.data.isNewUser)
+            }
+            is Result.Error -> {
+                _verifyUiStateFlow.value = VerifyUiState.Error(result.exception)
+            }
+            is Result.Loading -> {
+                _verifyUiStateFlow.value = VerifyUiState.Loading
+            }
+        }
+    }
+
+    // handle sign-in with credential result
     private fun handleSignInWithAuthResult(result: Result<SignInWithCredentialResult>) {
         when (result) {
             is Result.Success-> {
-//                Timber.e("sign in success! new user : ${result.data.isNewUser}")
+                Timber.e("sign in success! new user : ${result.data.isNewUser}")
                 _signInStateFlow.value = SignInState.Success(result.data.isNewUser)
             }
             is Result.Error-> {
@@ -128,11 +135,13 @@ class VerifyCodeViewModel @Inject constructor(
         }
     }
 
+    // handle user input (verification code)
     val handleTextInput = fun(text: String) {
         _verificationCodeStateFlow.value = text
     }
 }
 
+// State for sms code sent request
 sealed class PhoneAuthUiState {
     object None: PhoneAuthUiState()
     object Success: PhoneAuthUiState()
@@ -140,6 +149,7 @@ sealed class PhoneAuthUiState {
     data class Error(val exception: Throwable): PhoneAuthUiState()
 }
 
+// State for sms code verification request
 sealed class VerifyUiState {
     object None: VerifyUiState()
     object Success: VerifyUiState()
@@ -147,6 +157,7 @@ sealed class VerifyUiState {
     data class Error(val exception: Throwable): VerifyUiState()
 }
 
+// State for sign-in request
 sealed class SignInState {
     object None: SignInState()
     data class Success(val isNewUser: Boolean): SignInState()

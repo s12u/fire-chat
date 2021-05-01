@@ -1,5 +1,7 @@
 package com.tistory.mybstory.firechat.domain.usecase.profile
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.tistory.mybstory.firechat.di.IoDispatcher
@@ -17,6 +19,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class UpdateProfileUseCase @Inject constructor(
+    private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
     @IoDispatcher ioDispatcher: CoroutineDispatcher
 ) : UseCase<UserProfile, Boolean>(ioDispatcher) {
@@ -24,19 +27,32 @@ class UpdateProfileUseCase @Inject constructor(
     @ExperimentalCoroutinesApi
     override fun execute(parameters: UserProfile): Flow<Result<Boolean>> = callbackFlow {
         Timber.e("update profile...")
-        firestore.collection("test_user")
+        val updateDbTask = firestore.collection("test_user")
             .document(parameters.uid)
             .set(parameters, SetOptions.merge())
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Timber.e("profile update success")
-                    offer(Result.Success(true))
-                    close()
-                } else {
-                    Timber.e("profile update failed")
-                    cancel(CancellationException("Failed to update profile"))
-                }
+
+        val profileChangeRequest = UserProfileChangeRequest.Builder()
+            .setDisplayName("exists")
+            .build()
+
+        val updateProfileTask = auth.currentUser?.updateProfile(profileChangeRequest)
+
+        updateDbTask.continueWithTask { task->
+            if (!task.isSuccessful) {
+                Timber.e("profile update failed with DB")
+                cancel(CancellationException("Failed to update profile with DB"))
             }
+            updateProfileTask
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Timber.e("profile update success")
+                offer(Result.Success(true))
+                close()
+            } else {
+                Timber.e("profile update failed")
+                cancel(CancellationException("Failed to update profile"))
+            }
+        }
         offer(Result.Loading)
         awaitClose()
     }

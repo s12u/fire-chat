@@ -1,24 +1,18 @@
-package com.tistory.mybstory.firechat.ui.main
+package com.tistory.mybstory.firechat.ui.chat
 
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.viewModels
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
-import com.tistory.mybstory.firechat.databinding.FragmentMainBinding
+import com.tistory.mybstory.firechat.databinding.FragmentChatListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
-
-    private val mainViewModel: MainViewModel by viewModels()
+class ChatListFragment: BaseFragment<FragmentChatListBinding>(R.layout.fragment_chat_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-            viewModel = mainViewModel
-        }
     }
 
     override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = null

@@ -1,4 +1,4 @@
-package com.tistory.mybstory.firechat.ui.main
+package com.tistory.mybstory.firechat.ui.home
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     @IoDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val chatRepository: ChatRepository,
     private val savedStateHandle: SavedStateHandle? = null

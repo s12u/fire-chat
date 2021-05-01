@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.tistory.mybstory.firechat.ui.MainActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -39,3 +40,7 @@ fun Fragment.showErrorSnackBar(errorMessage: String) {
     Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_SHORT).show()
 }
 
+/**
+ *  firebase extensions *
+ *  */
+fun FirebaseAuth.isSignedIn() = currentUser != null

@@ -3,13 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/firstRunFragment">
+    app:startDestination="@id/splashFragment">
 
+    <!-- nested navigation graph -->
+    <include app:graph="@navigation/nav_home"/>
+    <include app:graph="@navigation/nav_chat"/>
+    <include app:graph="@navigation/nav_settings"/>
+
+    <!-- splash fragment -->
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.tistory.mybstory.firechat.ui.main.MainFragment"
-        tools:layout="@layout/fragment_main" />
+        android:id="@+id/splashFragment"
+        android:name="com.tistory.mybstory.firechat.ui.splash.SplashFragment"
+        tools:layout="@layout/fragment_splash">
 
+        <action
+            android:id="@+id/action_splash_to_homeFragment"
+            app:destination="@+id/nav_home"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/nav_main" />
+        <action
+            android:id="@+id/action_splash_to_firstRunFragment"
+            app:destination="@id/firstRunFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/nav_main" />
+
+    </fragment>
+
+    <!-- first run fragment -->
     <fragment
         android:id="@+id/firstRunFragment"
         android:name="com.tistory.mybstory.firechat.ui.auth.FirstRunFragment"
@@ -20,6 +41,7 @@
             app:destination="@id/phoneAuthFragment" />
     </fragment>
 
+    <!-- phone authentication fragment -->
     <fragment
         android:id="@+id/phoneAuthFragment"
         android:name="com.tistory.mybstory.firechat.ui.auth.phone.PhoneAuthFragment"
@@ -33,6 +55,7 @@
             app:destination="@id/verifyCodeFragment" />
     </fragment>
 
+    <!-- country code select fragment -->
     <fragment
         android:id="@+id/countrySelectFragment"
         android:name="com.tistory.mybstory.firechat.ui.auth.phone.country.CountrySelectFragment"
@@ -48,14 +71,17 @@
             app:argType="string"
             app:nullable="false" />
 
-<!--        <argument-->
-<!--            android:name="verification_data"-->
-<!--            app:argType="com.tistory.mybstory.firechat.domain.usecase.auth.VerificationCodeSentResult"-->
-<!--            app:nullable="false" />-->
+        <!--        <argument-->
+        <!--            android:name="verification_data"-->
+        <!--            app:argType="com.tistory.mybstory.firechat.domain.usecase.auth.VerificationCodeSentResult"-->
+        <!--            app:nullable="false" />-->
 
         <action
-            android:id="@+id/action_verifyCode_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            android:id="@+id/action_verifyCode_to_homeFragment"
+            app:destination="@+id/nav_home"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/nav_main" />
 
         <action
             android:id="@+id/action_verifyCode_to_newProfileFragment"
@@ -63,19 +89,22 @@
 
     </fragment>
 
+    <!-- new profile fragment -->
     <fragment
         android:id="@+id/newProfileFragment"
         android:name="com.tistory.mybstory.firechat.ui.auth.profile.NewProfileFragment"
         tools:layout="@layout/fragment_new_profile">
 
-        <action android:id="@+id/action_show_image_select_dialog"
+        <action
+            android:id="@+id/action_show_image_select_dialog"
             app:destination="@id/imageSelectDialog" />
 
     </fragment>
 
+    <!-- image select bottom sheet dialog -->
     <dialog
         android:id="@+id/imageSelectDialog"
-        android:name="com.tistory.mybstory.firechat.ui.auth.profile.ImageSelectBottomSheetFragment">
-    </dialog>
+        android:name="com.tistory.mybstory.firechat.ui.auth.profile.ImageSelectBottomSheetFragment"
+        tools:layout="@layout/fragment_image_select_bottom_sheet" />
 
 </navigation>

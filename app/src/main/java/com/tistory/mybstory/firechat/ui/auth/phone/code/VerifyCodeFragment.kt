@@ -41,30 +41,28 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
         }
 
         btnResend.setOnClickListener {
-            viewModel.resendVerificationCode(requireActivity())
+            viewModel.sendVerificationCode(requireActivity())
         }
 
-        viewModel.resendVerificationCode(requireActivity())
-        showKeyboard(etVerificationCode)
+        viewModel.sendVerificationCode(requireActivity())
         // TODO: clear text & show dialog on expired
     }
 
     private fun observeUiStateChanges() {
         viewModel.phoneAuthUiStateFlow
-            .onEach { handleResendCodeUiState(it) }
+            .onEach { handleCodeSentUiState(it) }
             .launchIn(this)
 
         viewModel.verifyUiStateFlow
             .onEach { handleVerifyCodeUiState(it) }
             .launchIn(this)
 
-
-
         viewModel.signInStateFlow
             .onEach { handleSignInState(it) }
             .launchIn(this)
     }
 
+    // handle sms otp verification result
     private fun handleVerifyCodeUiState(state: VerifyUiState) = launch {
         Timber.e("state : $state")
         when (state) {
@@ -84,15 +82,17 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
         }
     }
 
-    private fun handleResendCodeUiState(state: PhoneAuthUiState) = launch {
+    // handle sms code sent result
+    private fun handleCodeSentUiState(state: PhoneAuthUiState) = launch {
         Timber.e("state : $state")
         when (state) {
             is PhoneAuthUiState.Success -> {
                 hideProgress()
+                showKeyboard(binding.etVerificationCode)
             }
             is PhoneAuthUiState.Error -> {
                 // TODO: show error message
-                handleResentError(state.exception)
+                handleCodeSentError(state.exception)
                 hideProgress()
             }
             is PhoneAuthUiState.Loading -> {
@@ -102,14 +102,16 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
         }
     }
 
+    // handle sign-in result
     private fun handleSignInState(state: SignInState) {
         when (state) {
             is SignInState.Success -> {
                 hideProgress()
+                Timber.e("new user : ${state.isNewUser}")
                 if (state.isNewUser) {
                     findNavController().navigate(R.id.action_verifyCode_to_newProfileFragment)
                 } else {
-                    findNavController().navigate(R.id.action_verifyCode_to_mainFragment)
+                    findNavController().navigate(R.id.action_verifyCode_to_homeFragment)
                 }
             }
             is SignInState.Error -> {
@@ -123,6 +125,7 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
         }
     }
 
+    // handle verification error
     private fun handleVerificationError(e: Throwable) {
         when (e) {
             is FirebaseAuthInvalidCredentialsException -> {
@@ -131,7 +134,8 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
         }
     }
 
-    private fun handleResentError(e: Throwable) {
+    // handle sms code sent error
+    private fun handleCodeSentError(e: Throwable) {
         val errorMessage = when (e) {
             is FirebaseAuthInvalidCredentialsException -> { getString(R.string.error_invalid_number) }
             else -> { getString(R.string.error_unknown) }
@@ -140,6 +144,7 @@ class VerifyCodeFragment : BaseFragment<FragmentVerifyCodeBinding>(R.layout.frag
         findNavController().navigateUp()
     }
 
+    // handle sign-in error
     private fun handleSignInError(e: Throwable) {
         when (e) {
             is FirebaseAuthInvalidCredentialsException -> {

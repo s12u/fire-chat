@@ -36,31 +36,6 @@ class NewProfileViewModel @Inject constructor(
     fun performUpdateProfile() {
         val uid = firebaseAuth.getCurrentUserId()
         if (uid != null && selectedImageUri.isNotEmpty()) {
-
-//            uploadProfileImage(uid, selectedImageUri)
-//                .onEach { result ->
-//                    if (result is Result.Loading) {
-//                        _profileUpdateUiStateFlow.value = NewProfileUiState.Loading
-//                    }
-//                }.filter {
-//                    it !is Result.Loading
-//                }.flatMapMerge { uploadResult ->
-//                    when (uploadResult) {
-//                        is Result.Success -> updateProfile(uid)
-//                        else -> throw Exception("")
-//                    }
-//                }.catch {
-//                    _profileUpdateUiStateFlow.value = NewProfileUiState.Error(it)
-//                    handleException(it)
-//                }
-//                .onEach { updateResult ->
-//                    if (updateResult is Result.Success) {
-//                        _profileUpdateUiStateFlow.value = NewProfileUiState.Success
-//                        Timber.e("profile upload success!")
-//                    }
-//                }.flowOn(Dispatchers.IO)
-//                .launchIn(viewModelScope)
-
             uploadProfileImage(uid, selectedImageUri)
                 .onStart { _profileUpdateUiStateFlow.value = NewProfileUiState.Loading }
                 .flatMapMerge { uploadResult->

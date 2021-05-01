@@ -68,7 +68,7 @@ class SendVerificationCodeUseCase @Inject constructor(
             }
             val options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(givenPhoneNumber)
-                .setTimeout(60L, TimeUnit.SECONDS)
+                .setTimeout(120L, TimeUnit.SECONDS)
                 .setActivity(activity)
                 .setCallbacks(callback)
                 .build()
@@ -87,5 +87,5 @@ data class VerificationCodeSentResult(
     val verificationId: String,
     val resendingToken: PhoneAuthProvider.ForceResendingToken? = null,
     val authCredential: PhoneAuthCredential? = null,
-    val autoSignIn: Boolean
+    val autoSignIn: Boolean,
 ) : Parcelable

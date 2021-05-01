@@ -5,6 +5,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.databinding.ActivityMainBinding
 import com.tistory.mybstory.firechat.util.Event
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        initNavigation()
         observeEvent()
     }
 
@@ -31,6 +34,23 @@ class MainActivity : AppCompatActivity() {
         eventBus.events
             .onEach { handleEvent(it) }
             .launchIn(lifecycleScope)
+    }
+
+    private fun initNavigation() = with(binding) {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+            val isTopLevel = destination.id in topLevelItems
+            val isNoBottomNavigation = destination.id in noBottomNavItems
+
+            val bottomNavVisibility = if (!isTopLevel || isNoBottomNavigation) View.GONE else View.VISIBLE
+
+            bottomNavigationView.visibility = bottomNavVisibility
+        }
+
+        bottomNavigationView.setupWithNavController(navController)
     }
 
     private fun handleEvent(event: Event) {
@@ -44,5 +64,22 @@ class MainActivity : AppCompatActivity() {
                 binding.layoutProgress.visibility = View.GONE
             }
         }
+    }
+
+    companion object {
+        private val topLevelItems = setOf(
+            R.id.homeFragment,
+            R.id.chatListFragment,
+            R.id.settingsFragment
+        )
+
+        private val noBottomNavItems = setOf(
+            R.id.splashFragment,
+            R.id.firstRunFragment,
+            R.id.phoneAuthFragment,
+            R.id.countrySelectFragment,
+            R.id.verifyCodeFragment,
+            R.id.newProfileFragment
+        )
     }
 }
