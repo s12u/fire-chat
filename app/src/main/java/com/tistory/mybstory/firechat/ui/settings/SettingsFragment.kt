@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import com.tistory.mybstory.firechat.R
 import com.tistory.mybstory.firechat.base.ui.BaseFragment
 import com.tistory.mybstory.firechat.databinding.FragmentSettingsBinding
+import com.tistory.mybstory.firechat.util.BackPressedCallbacks
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,6 +16,6 @@ class SettingsFragment: BaseFragment<FragmentSettingsBinding>(R.layout.fragment_
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = null
+    override var backPressedCallback: (OnBackPressedCallback.() -> Unit)? = BackPressedCallbacks.doubleBackpressToExit(this)
 
 }
