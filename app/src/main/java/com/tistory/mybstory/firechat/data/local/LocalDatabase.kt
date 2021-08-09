@@ -7,7 +7,7 @@ import com.tistory.mybstory.firechat.data.local.dao.MessageDao
 import com.tistory.mybstory.firechat.domain.entity.ChatMessageEntity
 import com.tistory.mybstory.firechat.domain.entity.ChatUserEntity
 
-@Database(entities = [ChatUserEntity::class, ChatMessageEntity::class], version = 1)
+@Database(entities = [ChatUserEntity::class, ChatMessageEntity::class], version = 1, exportSchema = false)
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun userDao(): ChatUserDao

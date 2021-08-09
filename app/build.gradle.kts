@@ -5,17 +5,16 @@ plugins {
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
     id("org.jlleitschuh.gradle.ktlint") version Versions.KTLINT
 }
 
 android {
-    compileSdkVersion(Versions.COMPILE_SDK)
-    buildToolsVersion(Versions.BUILD_TOOLS)
+    compileSdk = Versions.COMPILE_SDK
+    buildToolsVersion = Versions.BUILD_TOOLS
 
     defaultConfig {
-        minSdkVersion(Versions.MIN_SDK)
-        targetSdkVersion(Versions.TARGET_SDK)
+        minSdk = Versions.MIN_SDK
+        targetSdk = Versions.TARGET_SDK
         versionCode = Versions.VERSION_CODE
         versionName = Versions.VERSION_NAME
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -38,14 +37,17 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
         isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
-        val options = this as org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-        options.jvmTarget = "1.8"
+        jvmTarget = "11"
+    }
+
+    lint {
+        isCheckDependencies = true
     }
 
     buildFeatures {
@@ -122,4 +124,5 @@ dependencies {
     testImplementation(Libs.MOCKITO_KOTLIN)
     testImplementation(Libs.HAMCREST)
 }
+
 apply(plugin = "com.google.gms.google-services")
