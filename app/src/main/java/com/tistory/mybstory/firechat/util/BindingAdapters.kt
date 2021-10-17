@@ -11,7 +11,7 @@ import com.google.android.material.internal.TextWatcherAdapter
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-@BindingAdapter("app:url", "app:errorDrawable", requireAll = false)
+@BindingAdapter("imageUrl", "errorDrawable", requireAll = false)
 fun bindImageView(view: ImageView, url: String?, error: Drawable?) {
     val crossFadeTransition = DrawableTransitionOptions.withCrossFade(300)
 
@@ -23,7 +23,7 @@ fun bindImageView(view: ImageView, url: String?, error: Drawable?) {
         .into(view)
 }
 
-@BindingAdapter("app:nickNameValidator")
+@BindingAdapter("nickNameValidator")
 fun validateNickname(textInputLayout: TextInputLayout, data: String) {
     val regex = "^\$|^(?=.*[a-z])[a-z0-9]{0,15}\$".toRegex()
     val result = regex.matches(data)
@@ -31,7 +31,7 @@ fun validateNickname(textInputLayout: TextInputLayout, data: String) {
         if (!result) "User name must contain only letters, numbers or the underscore character." else ""
 }
 
-@BindingAdapter("app:textHandler")
+@BindingAdapter("textHandler")
 fun bindQueryOnEditText(view: TextInputEditText, handler: (String) -> Unit) {
     view.addTextChangedListener(object : TextWatcherAdapter() {
         override fun afterTextChanged(text: Editable) {

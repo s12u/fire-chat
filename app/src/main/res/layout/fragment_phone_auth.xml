@@ -76,7 +76,7 @@
                 android:hint="@string/phone_auth_form_hint"
                 android:inputType="phone"
                 android:maxLength="15"
-                app:textHandler="@{vm.handleTextInput}"
+                textHandler="@{vm.handleTextInput}"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense" />
 
         </com.google.android.material.textfield.TextInputLayout>
